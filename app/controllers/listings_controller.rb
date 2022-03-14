@@ -16,7 +16,13 @@ class ListingsController < ApplicationController
   end
 
   def create
-
+    @listing = current_user.listings.new(listing_params)
+    if @listing.save
+      redirect_to @listing, notice: "Listing successfully created"
+    else
+      set_form_vars
+      render "new", notice: "Something went wrong"
+    end
   end
 
   def edit
@@ -24,14 +30,24 @@ class ListingsController < ApplicationController
   end
 
   def update
-
+    @listing.update(listing_params)
+    if @listing.save
+      redirect_to @listing, notice: "Listing successfully updated"
+    else
+      set_form_vars
+      render "edit", notice: "Something went wrong"
+    end
   end
 
   def destroy
-
+    @listing.destroy
   end
 
   private
+
+  def listing_params
+    params.require(:listing).permit(:name, :price, :category_id, :description)
+  end
 
   def set_listing
     @listing = Listing.find(params[:id])
@@ -40,4 +56,5 @@ class ListingsController < ApplicationController
   def set_form_vars
     @categories = Category.all
   end
+
 end
