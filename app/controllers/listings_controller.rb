@@ -1,6 +1,7 @@
 class ListingsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_listing, only: [:show, :edit, :update, :destroy]
+  before_action :authorise_user, only: [:edit, :update, :destroy]
   before_action :set_form_vars, only: [:new, :edit]
 
   def index
@@ -41,12 +42,19 @@ class ListingsController < ApplicationController
 
   def destroy
     @listing.destroy
+    redirect_to listings_path, notice: "Listing successfully deleted"
   end
 
   private
 
   def listing_params
     params.require(:listing).permit(:name, :price, :category_id, :description, :picture)
+  end
+
+  def authorise_user
+    if @listing.user_id != current_user.id
+      redirect_to listings_path, alert: "You don't have permission to do that"
+    end
   end
 
   def set_listing
