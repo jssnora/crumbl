@@ -6,9 +6,6 @@
     <ul class="navbar-nav mr-5-lg">
     <%if user_signed_in?%>
     <li class="nav-item">
-        <%= link_to "Home", root_path, class:"nav-link"%>
-    </li>
-    <li class="nav-item">
         <%= link_to "All Listings", listings_path, class:"nav-link"%>
     </li>
         <li class="nav-item">
@@ -20,9 +17,6 @@
         <!--Displays custom welcome message-->
         <span>Hello, <%=current_user.email%></span> 
     <%else%>
-    <li class="nav-item">
-        <%= link_to "Home", root_path, class:"nav-link"%>
-    </li>
     <li class="nav-item">
         <%= link_to "Sign In", new_user_session_path, class:"nav-link"%>
     </li>
