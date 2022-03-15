@@ -10,4 +10,6 @@ Rails.application.routes.draw do
   patch "listings/:id", to: "listings#update"
   delete "listing/:id", to: "listings#destroy", as: "delete_listing"
   get "listings/:id/edit", to: "listings#edit", as: "edit_listing"
+  get "payments/success/:id", to: "payments#success", as: "payments_success"
+  post "payments/webhook", to: "payments#webhook"
 end
