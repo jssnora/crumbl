@@ -14,18 +14,22 @@ class PaymentsController < ApplicationController
             event = Stripe::Webhook.construct_event(payload, header, secret)
         #raise exceptions to catch errors from webhook construct event
         rescue Stripe::SignatureVerificationError => e
-            render json: {error: "Unauthorised"}, status: 403
+            render json: {error: "Unauthorised Access"}, status: 403
             return
         rescue JSON::ParserError => e
-            render json: {error: "Bad request"}, status: 422
+            render json: {error: "Bad Request"}, status: 422
             return
         end
+        
 
-        payment_intent_id = params[:data][:object][:payment_intent]
+        payment_intent_id = event.data.object.payment_intent
         payment = Stripe::PaymentIntent.retrieve(payment_intent_id)
         listing_id = payment.metadata.listing_id 
         pp payment.charges.data[0].receipt_url
         @listing = Listing.find(listing_id)
         @listing.update(sold: true)
+
+        #create order infor
+        
     end
 end
