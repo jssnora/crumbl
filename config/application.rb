@@ -24,7 +24,6 @@ end
 #added so Heroku can use staging credentials to deploy the staging app
 module Crumbl
   class Application < Rails::Application
-    …
     if ENV["PIPE_ENV"].present?
       Rails.application.config.credentials.content_path = Rails.root.join("config/credentials/#{ENV["PIPE_ENV"]}.yml.enc")
     end
