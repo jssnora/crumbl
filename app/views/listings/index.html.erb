@@ -7,7 +7,7 @@
             <%if listing.picture.attached?%>
                 <%=image_tag listing.picture, alt: listing.name, class:"thumbnail card-img top"%>
             <%else%>
-                <%=image_tag "duck.jpg", alt: "rubber duck", class:"thumbnail card-img top"%>
+                <%=image_tag "default.jpg", alt: "default picture", class:"thumbnail card-img top"%>
             <%end%>
         <div class="card-body">
           <h5><%=listing.name%></h5>
