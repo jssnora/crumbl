@@ -48,7 +48,7 @@ class ListingsController < ApplicationController
   private
 
   def listing_params
-    params.require(:listing).permit(:name, :price, :category_id, :description, :picture)
+    params.require(:listing).permit(:name, :price, :category_id, :description, :picture, dietary_option_ids: [])
   end
 
   def authorise_user
@@ -63,6 +63,7 @@ class ListingsController < ApplicationController
 
   def set_form_vars
     @categories = Category.all
+    @dietary_options = DietaryOption.all
   end
 
 end

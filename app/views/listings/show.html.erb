@@ -10,6 +10,11 @@
     </div>
     <div class='sidebar col-lg-4 p-0 mx-2 d-md-block'> 
         <h1 class='mb-sm-2 mb-md-5'><%=@listing.name%></h1>
+        <h5 class='mb-2'>Category: <%=@listing.category.name%></h2>
+    
+        <%@listing.dietary_options.each do |option|%>
+        <span class='badge badge-pill badge-info'><%=option.name%></span>
+        <%end%>
         <h5 class='text-muted'>Price: <%=format_price(@listing.price)%></h5>
         <p><%=@listing.description%></p>
 
