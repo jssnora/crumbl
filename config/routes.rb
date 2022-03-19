@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   get "payments/success/:id", to: "payments#success", as: "payments_success"
   post "payments/webhook", to: "payments#webhook"
   post "payments", to: "payments#create_checkout_session", as: "create_checkout_session"
+  get "orders", to: "orders#index", as: "orders"
+  get "orders/:id", to:"orders#show", as: "order"
 end

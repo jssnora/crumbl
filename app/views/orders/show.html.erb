@@ -1,0 +1,26 @@
+<section class='container d-flex flex-column flex-md-row px-2 my-2 my-md-5'>
+    <div class='content col-12 col-md-7 col-lg-8 p-0 pr-md-3'>
+        <div class='col-12 p-0 main-preview mb-4'>
+            <%if @order.listing.picture.attached?%>
+                <%=image_tag @order.listing.picture, alt: @order.listing.name, class:"thumbnail card-img top"%>
+            <%else%>
+                <%=image_tag "default.jpg", alt: "default picture", class:"thumbnail card-img top"%>
+            <%end%>
+        </div>
+    </div>
+    <div class='sidebar col-lg-4 p-0 mx-2 d-md-block'> 
+        <h1 class='mb-sm-2 mb-md-5'><%=@order.listing.name%></h1>
+        <h5 class='mb-2'>Category: <%=@order.listing.category.name%></h2>
+    
+        <%@order.listing.dietary_options.each do |option|%>
+        <span class='badge badge-pill badge-info'><%=option.name%></span>
+        <%end%>
+        <h5 class='text-muted'>Price: <%=format_price(@order.listing.price)%></h5>
+        <p><%=@order.listing.description%></p>
+
+        <h4>Want another one?</h4>
+        <%= link_to "Check stock", listing_path(@order.listing.id), class: "btn btn-info mr-2" %>
+
+    </div>
+
+</section>

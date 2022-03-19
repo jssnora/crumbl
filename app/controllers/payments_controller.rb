@@ -26,7 +26,7 @@ class PaymentsController < ApplicationController
               }
             },
             success_url: "#{root_url}payments/success/#{@listing.id}",
-            cancel_url: root_url
+            cancel_url: "#{root_url}listings/#{@listing.id}"
           )
       
           @session_id = session.id
@@ -48,6 +48,7 @@ class PaymentsController < ApplicationController
             return
         end
         
+        #track purchase info
         payment_intent_id = event.data.object.payment_intent
         payment = Stripe::PaymentIntent.retrieve(payment_intent_id)
         listing_id = payment.metadata.listing_id 

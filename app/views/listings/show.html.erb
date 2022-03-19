@@ -24,13 +24,14 @@
             remote: true,
             method: :post,
             params: {id: @listing.id},
-            class: 'btn btn-primary mb-3 pr-2'%>
+            class: 'btn btn-success mb-3 pr-2'%>
         <%elsif @listing.sold%>
-            <button class='btn btn-secondary' disabled>SOLD</button>
+            <button class='btn btn-secondary' disabled>SOLD OUT</button>
         <%else%>
             <%=button_to "Login to buy", new_user_session_path, class: "btn btn-info"%>
         <%end%>
 
+        <!--Options only available to the seller-->
         <div class='container'>
             <%if current_user && current_user.id == @listing.user_id%>
                 <div class='d-flex justify-content-equally'>
