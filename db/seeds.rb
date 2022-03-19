@@ -19,7 +19,7 @@ dietary_options = ["Gluten Free", "Dairy Free", "Nut Free", "Egg Free"]
 
 if DietaryOption.count == 0
     dietary_options.each do |o|
-        Category.create(name: o)
+        DietaryOption.create(name: o)
         puts "created #{o} option"
     end
 end
