@@ -5,6 +5,33 @@ class PaymentsController < ApplicationController
         @order = Order.find_by(listing_id: params[:id])
     end
 
+    def create_checkout_session
+        @listing = Listing.find(params[:id])
+        
+        session = Stripe::Checkout::Session.create(
+            payment_method_types: ['card'],
+            customer_email: current_user && current_user.email,
+            line_items: [
+              {
+                name: @listing.name,
+                amount: @listing.price,
+                currency: 'aud',
+                quantity: 1
+              }
+            ],
+            payment_intent_data: {
+              metadata: {
+                user_id: current_user && current_user.id,
+                listing_id: @listing.id
+              }
+            },
+            success_url: "#{root_url}payments/success/#{@listing.id}",
+            cancel_url: root_url
+          )
+      
+          @session_id = session.id
+    end
+
     def webhook
         #creates event to verify post request is from Stripe
         begin
@@ -29,7 +56,7 @@ class PaymentsController < ApplicationController
         @listing = Listing.find(listing_id)
         @listing.update(sold: true)
 
-        #create order infor
-        Order.create(listing_id: listing_id, buyer_id: buyer_id, payment_id: payment_intent_id, receipt_url: receipt)
+        #create order info
+        Order.create(listing_id: listing_id, buyer_id: buyer_id, seller_id: @listing.user_id, payment_id: payment_intent_id, receipt_url: receipt)
     end
 end
