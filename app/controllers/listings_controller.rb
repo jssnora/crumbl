@@ -15,7 +15,6 @@ class ListingsController < ApplicationController
       line_items: [
         {
           name: @listing.name,
-          description: @listing.description,
           amount: @listing.price,
           currency: 'aud',
           quantity: 1
