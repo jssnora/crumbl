@@ -21,7 +21,7 @@
         <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class:"nav-link"%>
     </li>
         <!--Displays custom welcome message-->
-        <span>Hello, <%=current_user.email%></span> 
+        <span>Signed in as <%=current_user.email%></span> 
     <%else%>
     <li class="nav-item">
         <%= link_to "Sign In", new_user_session_path, class:"nav-link"%>
