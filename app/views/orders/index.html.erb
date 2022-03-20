@@ -2,23 +2,25 @@
 <section class="container">
   <div class="row row-cols-sm-1 row-cols-md-2 row-cols-lg-4">
     <%@orders.each do |order|%>
-    <div class="col mb-4">
-      <div class="card border-dark h-100">
-            <%if order.listing.picture.attached?%>
-                <%=image_tag order.listing.picture, alt: order.listing.name, class:"thumbnail card-img top"%>
-            <%else%>
-                <%=image_tag "default.jpg", alt: "default picture", class:"thumbnail card-img top"%>
-            <%end%>
-        <div class="card-body">
-          <h5><%=order.listing.name%></h5>
-          <p class="card-text text-secondary"><%=order.listing.description%></p>
-            <div class='d-flex justify-content-between'> 
-                <%=link_to "Details", order_path(order.id), class: "btn btn-outline-primary"%>
-                <h5>Purchased!</h5>
+      <% if order.buyer_id == current_user.id %>
+        <div class="col mb-4">
+          <div class="card border-dark h-100">
+                <%if order.listing.picture.attached?%>
+                    <%=image_tag order.listing.picture, alt: order.listing.name, class:"thumbnail card-img top"%>
+                <%else%>
+                    <%=image_tag "default.jpg", alt: "default picture", class:"thumbnail card-img top"%>
+                <%end%>
+            <div class="card-body">
+              <h5><%=order.listing.name%></h5>
+              <p class="card-text text-secondary"><%=order.listing.description%></p>
+                <div class='d-flex justify-content-between'> 
+                    <%=link_to "Details", order_path(order.id), class: "btn btn-outline-primary"%>
+                    <h5>Purchased!</h5>
+                </div>
             </div>
-        </div>
-      </div>
-    </div>    
+          </div>
+        </div> 
+      <%end%>   
     <%end%>
   </div>
 
