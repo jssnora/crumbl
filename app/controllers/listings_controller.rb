@@ -1,7 +1,7 @@
 class ListingsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_listing, only: [:show, :edit, :update, :destroy]
-  before_action :authorise_user, only: [:edit, :update, :destroy]
+  before_action :set_listing, only: [:show, :edit, :update, :destroy, :restock]
+  before_action :authorise_user, only: [:edit, :update, :destroy, :restock]
   before_action :set_form_vars, only: [:new, :edit]
 
   def index
@@ -43,6 +43,11 @@ class ListingsController < ApplicationController
   def destroy
     @listing.destroy
     redirect_to listings_path, notice: "Listing successfully deleted"
+  end
+
+  def restock
+    @listing.update(sold: false)
+    redirect_to @listing, notice: "Listing successfully restocked"
   end
 
   private

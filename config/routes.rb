@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get "listings/:id", to:"listings#show", as: "listing"
   put "listings/:id", to: "listings#update"
   patch "listings/:id", to: "listings#update"
+  get "listings/restock/:id", to: "listings#restock", as: "restock"
   delete "listing/:id", to: "listings#destroy", as: "delete_listing"
   get "listings/:id/edit", to: "listings#edit", as: "edit_listing"
   get "payments/success/:id", to: "payments#success", as: "payments_success"
