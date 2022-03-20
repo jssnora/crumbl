@@ -8,8 +8,12 @@ Rails.application.routes.draw do
   get "listings/:id", to:"listings#show", as: "listing"
   put "listings/:id", to: "listings#update"
   patch "listings/:id", to: "listings#update"
+  get "listings/restock/:id", to: "listings#restock", as: "restock"
   delete "listing/:id", to: "listings#destroy", as: "delete_listing"
   get "listings/:id/edit", to: "listings#edit", as: "edit_listing"
   get "payments/success/:id", to: "payments#success", as: "payments_success"
   post "payments/webhook", to: "payments#webhook"
+  post "payments", to: "payments#create_checkout_session", as: "create_checkout_session"
+  get "orders", to: "orders#index", as: "orders"
+  get "orders/:id", to:"orders#show", as: "order"
 end

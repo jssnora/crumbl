@@ -1,7 +1,7 @@
 class ListingsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_listing, only: [:show, :edit, :update, :destroy]
-  before_action :authorise_user, only: [:edit, :update, :destroy]
+  before_action :set_listing, only: [:show, :edit, :update, :destroy, :restock]
+  before_action :authorise_user, only: [:edit, :update, :destroy, :restock]
   before_action :set_form_vars, only: [:new, :edit]
 
   def index
@@ -9,29 +9,7 @@ class ListingsController < ApplicationController
   end
 
   def show
-    session = Stripe::Checkout::Session.create(
-      payment_method_types: ['card'],
-      customer_email: current_user && current_user.email,
-      line_items: [
-        {
-          name: @listing.name,
-          description: @listing.description,
-          amount: @listing.price,
-          currency: 'aud',
-          quantity: 1
-        }
-      ],
-      payment_intent_data: {
-        metadata: {
-          user_id: current_user && current_user.id,
-          listing_id: @listing.id
-        }
-      },
-      success_url: "#{root_url}payments/success/#{@listing.id}",
-      cancel_url: root_url
-    )
-
-    @session_id = session.id
+    
   end
 
   def new
@@ -67,10 +45,15 @@ class ListingsController < ApplicationController
     redirect_to listings_path, notice: "Listing successfully deleted"
   end
 
+  def restock
+    @listing.update(sold: false)
+    redirect_to @listing, notice: "Listing successfully restocked"
+  end
+
   private
 
   def listing_params
-    params.require(:listing).permit(:name, :price, :category_id, :description, :picture)
+    params.require(:listing).permit(:name, :price, :category_id, :description, :picture, dietary_option_ids: [])
   end
 
   def authorise_user
@@ -85,6 +68,7 @@ class ListingsController < ApplicationController
 
   def set_form_vars
     @categories = Category.all
+    @dietary_options = DietaryOption.all
   end
 
 end

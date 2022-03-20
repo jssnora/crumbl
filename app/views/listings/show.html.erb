@@ -10,22 +10,36 @@
     </div>
     <div class='sidebar col-lg-4 p-0 mx-2 d-md-block'> 
         <h1 class='mb-sm-2 mb-md-5'><%=@listing.name%></h1>
+        <h5 class='mb-2'>Category: <%=@listing.category.name%></h2>
+    
+        <%@listing.dietary_options.each do |option|%>
+        <span class='badge badge-pill badge-info'><%=option.name%></span>
+        <%end%>
         <h5 class='text-muted'>Price: <%=format_price(@listing.price)%></h5>
         <p><%=@listing.description%></p>
 
         <%if current_user && @listing.sold == false %>
-            <button class='btn btn-primary mb-3 pr-2' data-stripe="payment">Buy:<%=format_price(@listing.price)%> </button>
+            <%=button_to "Buy: #{format_price(@listing.price)}",
+            create_checkout_session_path,
+            remote: true,
+            method: :post,
+            params: {id: @listing.id},
+            class: 'btn btn-success mb-3 pr-2'%>
         <%elsif @listing.sold%>
-            <button class='btn btn-secondary' disabled>SOLD</button>
+            <button class='btn btn-secondary' disabled>SOLD OUT</button>
         <%else%>
-            <%=button_to "Login to buy", new_user_session_path, class: "btn btn-info"%>
+            <%=button_to "Login to buy", new_user_session_path, class: "btn btn-success"%>
         <%end%>
 
+        <!--Options only available to the seller-->
         <div class='container'>
             <%if current_user && current_user.id == @listing.user_id%>
                 <div class='d-flex justify-content-equally'>
                     <%= link_to "Edit", edit_listing_path(@listing.id), class: "btn btn-warning mr-2" %>
-                    <%= link_to "Delete", delete_listing_path(@listing.id), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger" %>
+                    <%= link_to "Delete", delete_listing_path(@listing.id), method: :delete, data: {confirm: "Are you sure?"}, class: "btn btn-danger mr-2" %>
+                    <%if @listing.sold == true %>
+                    <%= link_to "Restock", restock_path(@listing.id), class: "btn btn-primary mr-2" %>
+                    <%end%>
                 </div>
             <%end%>
         </div>
@@ -33,15 +47,3 @@
     </div>
 
 </section>
-<script src="https://js.stripe.com/v3/"></script>
-<script>
-document
-  .querySelector("[data-stripe='payment']")
-  .addEventListener("click", () => {
-    const stripe = Stripe("<%=Rails.application.credentials.dig(:stripe, :public_key)%>");
-    console.log(stripe);
-    stripe.redirectToCheckout({
-      sessionId: "<%=@session_id%>"
-    })
-  })
-</script>
